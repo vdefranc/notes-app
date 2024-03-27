@@ -24,7 +24,7 @@ export default async function Home({
           It would conditionally render an existing note or a blank note.
         */}
 
-        <SelectedNote notes={notes} note={note} />
+        <SelectedNote note={note} />
       </div>
     </main>
   );

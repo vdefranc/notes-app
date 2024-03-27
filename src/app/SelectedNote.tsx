@@ -36,17 +36,8 @@ function formReducer(state: FormState, action: FormAction) {
   }
 }
 
-export default function SelectedNote({
-  notes,
-  note,
-}: {
-  notes: Note[];
-  note: Note | null;
-}) {
+export default function SelectedNote({ note }: { note: Note | null }) {
   // should move this to the top-level server component and just do a SELECT
-  const searchParams = useSearchParams();
-  const selectedNoteId = searchParams.get("note");
-  const selectedNote = note || notes.find((note) => note.id === selectedNoteId);
 
   useEffect(() => {
     if (note?.body && note?.title) {
@@ -61,8 +52,8 @@ export default function SelectedNote({
   }, [note?.id]);
 
   const [formState, dispatch] = useReducer(formReducer, {
-    title: selectedNote?.title ?? "",
-    body: selectedNote?.body ?? "",
+    title: note?.title ?? "",
+    body: note?.body ?? "",
   });
 
   // todo: get rid of `any`

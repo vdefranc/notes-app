@@ -7,5 +7,5 @@ import SelectedNote from "@/app/SelectedNote";
 export default async function Note({ params, searchParams }) {
   const note = await getNoteById({ id: searchParams.note });
 
-  return <SelectedNote notes={[]} note={note} />;
+  return <SelectedNote note={note} />;
 }
