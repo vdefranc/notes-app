@@ -35,3 +35,15 @@ export async function getNotes(): Promise<Note[]> {
 
   return noteQueryResult.rows;
 }
+
+export async function getNoteById({
+  id,
+}: {
+  id: string;
+}): Promise<Note | null> {
+  const noteQueryResult = await sql<Note>`
+    select * from notes where id=${id};
+  `;
+
+  return noteQueryResult.rows[0];
+}

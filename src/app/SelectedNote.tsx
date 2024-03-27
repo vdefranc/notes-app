@@ -4,30 +4,61 @@ import noteFormStyles from "./noteform.module.css";
 import { useSearchParams } from "next/navigation";
 import { createNote } from "@/app/serverActions";
 import { Note } from "@/app/notes/types";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
+import pageStyles from "@/app/page.module.css";
 
 interface FormState {
   body: string;
   title: string;
 }
 
-interface FormAction {
+interface InputAction {
   type: keyof FormState;
   value: string;
 }
 
-function formReducer(state: FormState, action: FormAction) {
-  return {
-    ...state,
-    [action.type]: action.value,
-  };
+interface ResetAction {
+  type: "reset";
+  value: FormState;
 }
 
-export default function SelectedNote({ notes }: { notes: Note[] }) {
+type FormAction = InputAction | ResetAction;
+
+function formReducer(state: FormState, action: FormAction) {
+  switch (action.type) {
+    case "reset":
+      return { ...action.value };
+    default:
+      return {
+        ...state,
+        [action.type]: action.value,
+      };
+  }
+}
+
+export default function SelectedNote({
+  notes,
+  note,
+}: {
+  notes: Note[];
+  note: Note | null;
+}) {
   // should move this to the top-level server component and just do a SELECT
   const searchParams = useSearchParams();
   const selectedNoteId = searchParams.get("note");
-  const selectedNote = notes.find((note) => note.id === selectedNoteId);
+  const selectedNote = note || notes.find((note) => note.id === selectedNoteId);
+
+  useEffect(() => {
+    if (note?.body && note?.title) {
+      dispatch({
+        type: "reset",
+        value: {
+          body: note.body,
+          title: note.title,
+        },
+      });
+    }
+  }, [note?.id]);
 
   const [formState, dispatch] = useReducer(formReducer, {
     title: selectedNote?.title ?? "",
@@ -40,21 +71,23 @@ export default function SelectedNote({ notes }: { notes: Note[] }) {
   }
 
   return (
-    <form action={createNote} id="note-form" onChange={handleChangeEvent}>
-      <input type="text" name="title" value={formState.title} />
-      <br />
-      <br />
+    <div className={pageStyles["selected-note"]}>
+      <form action={createNote} id="note-form" onChange={handleChangeEvent}>
+        <input type="text" name="title" value={formState.title} />
+        <br />
+        <br />
 
-      <textarea
-        className={noteFormStyles["note-body"]}
-        name="body"
-        rows={10}
-        value={formState.body}
-      />
-      <br />
-      <br />
+        <textarea
+          className={noteFormStyles["note-body"]}
+          name="body"
+          rows={10}
+          value={formState.body}
+        />
+        <br />
+        <br />
 
-      <button type="submit">submit!</button>
-    </form>
+        <button type="submit">submit!</button>
+      </form>
+    </div>
   );
 }

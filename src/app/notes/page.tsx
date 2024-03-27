@@ -1,15 +1,11 @@
 import notes from "../mock-notes";
+import { getNoteById } from "@/app/serverActions";
+import SelectedNote from "@/app/SelectedNote";
 
-export default function Home() {
-  return (
-    <div>
-      {notes.map((note) => {
-        return (
-          <p key={note.id}>
-            {note.title} by user {note.user_id}
-          </p>
-        );
-      })}
-    </div>
-  );
+// TODO: remove ignore
+// @ts-ignore
+export default async function Note({ params, searchParams }) {
+  const note = await getNoteById({ id: searchParams.note });
+
+  return <SelectedNote notes={[]} note={note} />;
 }
