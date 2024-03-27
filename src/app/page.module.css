@@ -20,6 +20,7 @@ a:not(:last-of-type) .note-column-item {
   border-bottom: 1px solid #ccc;
 }
 
+
 .selected-note {
   flex: 6;
   flex-basis: 75%;

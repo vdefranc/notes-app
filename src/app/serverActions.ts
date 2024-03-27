@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import * as uuid from "uuid";
 import { sql } from "@vercel/postgres";
 import { Note } from "@/app/notes/types";
@@ -14,7 +16,7 @@ export async function createNote(formData: FormData) {
     user_id: uuid.v4(),
     title: String(data.title),
     // need to add body to the form data
-    body: String(data.title),
+    body: String(data.body),
     updated_at: new Date().toISOString(),
   };
 
@@ -22,4 +24,14 @@ export async function createNote(formData: FormData) {
     INSERT INTO notes (user_id, title, body, updated_at)
     VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}, ${noteData.updated_at})
   `;
+
+  revalidatePath("/");
+}
+
+export async function getNotes(): Promise<Note[]> {
+  const noteQueryResult = await sql<Note>`
+    select * from notes order by updated_at desc;
+  `;
+
+  return noteQueryResult.rows;
 }
