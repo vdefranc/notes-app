@@ -1,8 +1,8 @@
 "use client";
 
 import noteFormStyles from "./noteform.module.css";
-import { useSearchParams } from "next/navigation";
-import { createNote } from "@/app/serverActions";
+
+import { createNote, updateNote } from "@/app/serverActions";
 import { Note } from "@/app/notes/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
@@ -37,24 +37,20 @@ function formReducer(state: FormState, action: FormAction) {
 }
 
 export default function SelectedNote({ note }: { note: Note | null }) {
-  // should move this to the top-level server component and just do a SELECT
-
-  useEffect(() => {
-    if (note?.body && note?.title) {
-      dispatch({
-        type: "reset",
-        value: {
-          body: note.body,
-          title: note.title,
-        },
-      });
-    }
-  }, [note?.id]);
-
   const [formState, dispatch] = useReducer(formReducer, {
     title: note?.title ?? "",
     body: note?.body ?? "",
   });
+
+  useEffect(() => {
+    dispatch({
+      type: "reset",
+      value: {
+        body: note?.body || "",
+        title: note?.title || "",
+      },
+    });
+  }, [note?.id]);
 
   // todo: get rid of `any`
   function handleChangeEvent(event: any) {
@@ -63,7 +59,25 @@ export default function SelectedNote({ note }: { note: Note | null }) {
 
   return (
     <div className={pageStyles["selected-note"]}>
-      <form action={createNote} id="note-form" onChange={handleChangeEvent}>
+      <form
+        id="note-form"
+        onChange={handleChangeEvent}
+        action={async (event) => {
+          const action = note?.id ? "update" : "create";
+
+          if (action === "update" && note?.id) {
+            const newNoteValue: Note = {
+              ...note,
+              body: formState.body,
+              title: formState.title,
+            };
+
+            await updateNote(newNoteValue);
+          } else {
+            await createNote(event);
+          }
+        }}
+      >
         <input type="text" name="title" value={formState.title} />
         <br />
         <br />

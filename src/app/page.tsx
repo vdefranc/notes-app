@@ -18,12 +18,8 @@ export default async function Home({
   return (
     <main className={pageStyles.main}>
       <NotesList notes={notes} />
-      <div className={pageStyles["selected-note"]}>
-        {/*
-          Need a component like DisplayArea.
-          It would conditionally render an existing note or a blank note.
-        */}
 
+      <div className={pageStyles["selected-note"]}>
         <SelectedNote note={note} />
       </div>
     </main>

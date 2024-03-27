@@ -3,6 +3,7 @@
 import pageStyles from "@/app/page.module.css";
 import NoteColumnItem from "@/app/NoteColumnItem";
 import { Note } from "@/app/notes/types";
+import { useRouter } from "next/navigation";
 
 interface NotesListProps {
   notes: Note[];
@@ -10,6 +11,7 @@ interface NotesListProps {
 
 export default function NotesList(props: NotesListProps) {
   const { notes } = props;
+  const router = useRouter();
 
   return (
     <div className={pageStyles["notes-column"]}>
@@ -17,7 +19,7 @@ export default function NotesList(props: NotesListProps) {
         <p>
           <button
             onClick={() => {
-              console.log("click click!");
+              router.push("/");
             }}
           >
             create note
