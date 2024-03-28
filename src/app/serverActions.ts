@@ -8,8 +8,6 @@ import { Note } from "@/app/notes/types";
 
 const { sql } = vercelPg;
 
-//   TODO: fix all the ignores in this file
-
 export async function createNote(formData: FormData) {
   // need validation
   const values = Object.fromEntries(formData.entries());
@@ -19,13 +17,13 @@ export async function createNote(formData: FormData) {
     title: String(values.title),
     body: String(values.body),
     user_id: uuid.v4(),
-    // @ts-ignore
-    updated_at: new Date().toISOString(),
+
+    updated_at: new Date(),
   };
 
   await sql`
     INSERT INTO notes (user_id, title, body, updated_at)
-    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}, ${noteData.updated_at})
+    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}, ${noteData.updated_at.toISOString()})
   `;
 
   revalidatePath("/");
@@ -37,12 +35,11 @@ export async function updateNote(note: Note) {
   const noteData: Note = {
     // probably aren't going to care about user ids!
     ...note,
-    // @ts-ignore
-    updated_at: new Date().toISOString(),
+    updated_at: new Date(),
   };
 
   await sql`
-    update notes set title=${noteData.title}, body=${noteData.body}, updated_at=${noteData.updated_at}
+    update notes set title=${noteData.title}, body=${noteData.body}, updated_at=${noteData.updated_at.toISOString()}
     where id=${noteData.id}
   `;
 
