@@ -52,9 +52,9 @@ export async function updateNote(note: Note) {
     ],
   );
 
-  return queryResult.rows;
+  revalidatePath(`/?note=${note.id}`);
 
-  revalidatePath(`/`);
+  return queryResult.rows;
 }
 
 export async function getNotes(query: string = ""): Promise<Note[]> {

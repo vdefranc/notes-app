@@ -1,11 +1,40 @@
-import notes from "../mock-notes";
-import { getNoteById } from "@/app/serverActions";
+"use client";
+
+import pageStyles from "./page.module.css";
+
 import SelectedNote from "@/app/SelectedNote";
+import NotesList from "@/app/NotesList";
+import { getNoteById, getNotes } from "@/app/serverActions";
+import { AppShell, Burger } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 
-// TODO: remove ignore
-// @ts-ignore
-export default async function Note({ params, searchParams }) {
-  const note = await getNoteById({ id: searchParams.note });
+export default function Notes({
+  searchParams,
+}: {
+  searchParams: { note: string | null; query: string | null };
+}) {
+  const [opened, { toggle }] = useDisclosure();
 
-  return <SelectedNote note={note} />;
+  console.log("AYYYY YOOOOO");
+
+  return (
+    <AppShell
+      header={{ height: 60 }}
+      navbar={{
+        width: { sm: 200, lg: 300 },
+        breakpoint: "lg",
+        collapsed: { mobile: false, desktop: false },
+      }}
+      padding="md"
+    >
+      <AppShell.Header>
+        {/*<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />*/}
+        <div>Logo</div>
+      </AppShell.Header>
+
+      <AppShell.Navbar p="md">Navbar</AppShell.Navbar>
+
+      <AppShell.Main>Main</AppShell.Main>
+    </AppShell>
+  );
 }
