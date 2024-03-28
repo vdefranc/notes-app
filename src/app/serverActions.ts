@@ -5,10 +5,11 @@ import { revalidatePath } from "next/cache";
 import * as uuid from "uuid";
 import * as vercelPg from "@vercel/postgres";
 import { Note } from "@/app/notes/types";
+import pool from "@/app/psqlClient";
 
 const { sql } = vercelPg;
 
-export async function createNote(formData: FormData) {
+export async function createNote(formData: FormData): Promise<Note> {
   // need validation
   const values = Object.fromEntries(formData.entries());
 
@@ -19,12 +20,14 @@ export async function createNote(formData: FormData) {
     user_id: uuid.v4(),
   };
 
-  await sql`
+  const result = await sql<Note>`
     INSERT INTO notes (user_id, title, body)
-    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body})
+    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}) returning *;
   `;
 
   revalidatePath("/");
+
+  return result.rows[0];
 }
 
 export async function updateNote(note: Note) {
@@ -46,20 +49,18 @@ export async function updateNote(note: Note) {
 
 export async function getNotes(query: string = ""): Promise<Note[]> {
   try {
-    if (!!query) {
-      const noteQueryResult = await sql<Note>`
-        select * from notes 
-        where body like '%'||${query}||'%' or title like '%'||${query}||'%' 
-        order by updated_at desc;
-      `;
+    // note that clients are closed automatically when using pool.query
+    // https://node-postgres.com/features/pooling#single-query
+    const queryResult = await pool.query<Note>(
+      `
+          select * from notes 
+          where body like '%'||$1||'%' or title like '%'||$1||'%' 
+          order by updated_at desc;
+        `,
+      [query],
+    );
 
-      return noteQueryResult.rows;
-    }
-
-    const noteQueryResult =
-      await sql<Note>`select * from notes order by updated_at desc;`;
-
-    return noteQueryResult.rows;
+    return queryResult.rows;
   } catch (err) {
     console.log("error querying for notes: ", err);
     return [];
@@ -71,9 +72,10 @@ export async function getNoteById({
 }: {
   id: string;
 }): Promise<Note | null> {
-  const noteQueryResult = await sql<Note>`
-    select * from notes where id=${id};
-  `;
+  const noteQueryResult = await pool.query<Note>(
+    "select * from notes where id=$1",
+    [id],
+  );
 
   return noteQueryResult.rows[0];
 }
