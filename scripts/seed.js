@@ -24,7 +24,6 @@ async function createNotesTable(client) {
     const createdTable = await client.sql`
       CREATE TABLE IF NOT EXISTS notes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        user_id UUID,
         title VARCHAR(50) not null,
         body VARCHAR(300) not null,
         created_at timestamp not null default now(),

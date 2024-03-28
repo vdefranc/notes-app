@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## takehome solution
 
-## Getting Started
+Hello! Thank you for taking the time to review my notes app. I'd like to share a few things.
 
-First, run the development server:
+## project approach
+I decided to build the app using Next.js. I did that for a couple of reasons. First, I know that it's a part of your tech 
+stack. Also, I've never built anything with React Server Components, so I thought I'd give that a try in combination 
+with Next! I'll share some my thoughts on the tech stack later on in the README.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The app itself is, obviously, a pretty straightforward CRUD application. I aimed to satisfy the requirements while also 
+adding some behaviors that are similar to those of the Apple Notes OSX app. Specifically, the most-recently updated
+note will appear at the top of the list of notes. And there's sort of a similar layout and feel.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+It's deployed on Vercel, and it uses a postgres data store. I felt weird about deploying the app publicly on the 
+internet without user authentication set up, but ultimately I felt that building auth was out of scope here. 
+This means that all users will be able to view and edit all notes.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## running the project
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### recommended
+If you have docker installed, it will be very simple to run the application. 
+Simply run `docker-compose up`. This will start a development server that has hot reload enabled.
+It will also start an accompanying postgres container that contains a `notes` table with one row.
 
-## Learn More
+### an alternate approach
+If you want to run the application outside a docker container,
+you'll need to have a local instance of postgres running. You'll also need to edit `PGHOST` in
+`.env.local` to point to `localhost`. After that:
 
-To learn more about Next.js, take a look at the following resources:
+1. `npm i` to install dependencies.
+2. `npm run dev` to run the application.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Thoughts on Next.js with RSC

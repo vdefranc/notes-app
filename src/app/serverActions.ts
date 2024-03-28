@@ -11,18 +11,16 @@ export async function createNote(formData: FormData): Promise<Note> {
   const values = Object.fromEntries(formData.entries());
 
   const noteData: Omit<Note, "created_at" | "updated_at" | "id"> = {
-    // probably aren't going to care about user ids!
     title: String(values.title),
     body: String(values.body),
-    user_id: uuid.v4(),
   };
 
   const result = await pool.query<Note>(
     `
-      INSERT INTO notes (user_id, title, body)
-      VALUES ($1, $2, $3) returning *;
+      INSERT INTO notes (title, body)
+      VALUES ($1, $2) returning *;
     `,
-    [noteData.user_id, noteData.title, noteData.body],
+    [noteData.title, noteData.body],
   );
 
   revalidatePath("/");

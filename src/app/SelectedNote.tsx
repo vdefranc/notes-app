@@ -86,7 +86,6 @@ export default function SelectedNote({ note }: { note: Note | null }) {
         <TextInput
           name="title"
           label="Note title"
-          description="Add a title to your note."
           placeholder={"note title"}
           value={formState.title}
           onChange={handleChangeEvent}
@@ -97,7 +96,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
         <Textarea
           name="body"
           label={"Note content"}
-          description="Write a note. It can be between 20 and 300 characters long."
+          description="Your note can be between 20 and 300 characters long."
           placeholder={"add note body"}
           rows={10}
           value={formState.body}
