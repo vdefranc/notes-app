@@ -3,11 +3,8 @@
 import { revalidatePath } from "next/cache";
 
 import * as uuid from "uuid";
-import * as vercelPg from "@vercel/postgres";
 import { Note } from "@/app/notes/types";
 import pool from "@/app/psqlClient";
-
-const { sql } = vercelPg;
 
 export async function createNote(formData: FormData): Promise<Note> {
   // need validation
@@ -20,10 +17,13 @@ export async function createNote(formData: FormData): Promise<Note> {
     user_id: uuid.v4(),
   };
 
-  const result = await sql<Note>`
-    INSERT INTO notes (user_id, title, body)
-    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}) returning *;
-  `;
+  const result = await pool.query<Note>(
+    `
+      INSERT INTO notes (user_id, title, body)
+      VALUES ($1, $2, $3) returning *;
+    `,
+    [noteData.user_id, noteData.title, noteData.body],
+  );
 
   revalidatePath("/");
 
@@ -39,10 +39,20 @@ export async function updateNote(note: Note) {
     updated_at: new Date(),
   };
 
-  await sql`
-    update notes set title=${noteData.title}, body=${noteData.body}, updated_at=${noteData.updated_at.toISOString()}
-    where id=${noteData.id}
-  `;
+  const queryResult = await pool.query<Note>(
+    `
+      update notes set title=$1, body=$2, updated_at=$3
+      where id=$4
+    `,
+    [
+      noteData.title,
+      noteData.body,
+      noteData.updated_at.toISOString(),
+      noteData.id,
+    ],
+  );
+
+  return queryResult.rows;
 
   revalidatePath(`/`);
 }

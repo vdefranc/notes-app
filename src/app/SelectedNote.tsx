@@ -6,6 +6,7 @@ import { createNote, updateNote } from "@/app/serverActions";
 import { Note } from "@/app/notes/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface FormState {
   body: string;
@@ -37,6 +38,9 @@ function formReducer(state: FormState, action: FormAction) {
 }
 
 export default function SelectedNote({ note }: { note: Note | null }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
   const [formState, dispatch] = useReducer(formReducer, {
     title: note?.title ?? "",
     body: note?.body ?? "",
@@ -57,26 +61,29 @@ export default function SelectedNote({ note }: { note: Note | null }) {
     dispatch({ type: event.target.name, value: event.target.value });
   }
 
+  async function handleFormSubmit(formData: FormData) {
+    const action = note?.id ? "update" : "create";
+
+    if (action === "update" && note?.id) {
+      const newNoteValue: Note = {
+        ...note,
+        body: formState.body,
+        title: formState.title,
+      };
+
+      await updateNote(newNoteValue);
+    } else {
+      const createdNote = await createNote(formData);
+      const newParams = new URLSearchParams(searchParams);
+
+      newParams.set("note", createdNote.id);
+      router.replace(`${pathname}?${newParams.toString()}`);
+    }
+  }
+
   return (
     <div className={pageStyles["selected-note"]}>
-      <form
-        id="note-form"
-        action={async (event) => {
-          const action = note?.id ? "update" : "create";
-
-          if (action === "update" && note?.id) {
-            const newNoteValue: Note = {
-              ...note,
-              body: formState.body,
-              title: formState.title,
-            };
-
-            await updateNote(newNoteValue);
-          } else {
-            await createNote(event);
-          }
-        }}
-      >
+      <form id="note-form" action={handleFormSubmit}>
         <input
           type="text"
           placeholder={"add note text"}

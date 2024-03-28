@@ -10,7 +10,6 @@
     "seed": "node -r dotenv/config ./scripts/seed.js"
   },
   "dependencies": {
-    "@vercel/postgres": "^0.7.2",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
     "next": "14.1.4",
