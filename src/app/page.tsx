@@ -1,7 +1,7 @@
 import pageStyles from "./page.module.css";
 
 import SelectedNote from "@/app/SelectedNote";
-import NotesList from "@/NotesList";
+import NotesList from "@/app/NotesList";
 import { getNoteById, getNotes } from "@/app/serverActions";
 
 export default async function Home({
