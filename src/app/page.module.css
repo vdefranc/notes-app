@@ -12,6 +12,10 @@
   border-right: 1px solid #ccc;
 }
 
+.notes-list {
+  margin-top: 1em;
+}
+
 .note-column-item {
   padding: 1em;
 }

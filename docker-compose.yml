@@ -36,17 +36,5 @@ services:
       - ./seed-data/migrations:/docker-entrypoint-initdb.d
       - postgres-data:/var/lib/postgresql/data
 
-
-#  pg_proxy:
-#    image: ghcr.io/neondatabase/wsproxy:latest
-#    environment:
-#      APPEND_PORT: "postgres:5432"
-#      ALLOW_ADDR_REGEX: ".*"
-#      LOG_TRAFFIC: "true"
-#    ports:
-#      - "5433:80"
-#    depends_on:
-#      - postgres
-
 volumes:
   postgres-data: # Named volume for persistence

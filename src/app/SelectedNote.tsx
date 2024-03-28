@@ -1,12 +1,11 @@
 "use client";
 
-import noteFormStyles from "./noteform.module.css";
-
 import { createNote, updateNote } from "@/app/serverActions";
 import { Note } from "@/app/notes/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, Textarea, TextInput } from "@mantine/core";
 
 interface FormState {
   body: string;
@@ -84,28 +83,32 @@ export default function SelectedNote({ note }: { note: Note | null }) {
   return (
     <div className={pageStyles["selected-note"]}>
       <form id="note-form" action={handleFormSubmit}>
-        <input
-          type="text"
-          placeholder={"add note text"}
+        <TextInput
           name="title"
+          label="Note title"
+          description="Add a title to your note."
+          placeholder={"note title"}
           value={formState.title}
           onChange={handleChangeEvent}
         />
-        <br />
+
         <br />
 
-        <textarea
-          className={noteFormStyles["note-body"]}
+        <Textarea
           name="body"
+          label={"Note content"}
+          description="Write a note. It can be between 20 and 300 characters long."
           placeholder={"add note body"}
           rows={10}
           value={formState.body}
           onChange={handleChangeEvent}
         />
-        <br />
+
         <br />
 
-        <button type="submit">submit!</button>
+        <Button variant={"filled"} type="submit">
+          save your note!
+        </Button>
       </form>
     </div>
   );

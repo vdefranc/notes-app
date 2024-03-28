@@ -4,6 +4,7 @@ import pageStyles from "@/app/page.module.css";
 import NoteColumnItem from "@/app/NoteColumnItem";
 import { Note } from "@/app/notes/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button, TextInput } from "@mantine/core";
 
 interface NotesListProps {
   notes: Note[];
@@ -17,8 +18,10 @@ export default function NotesList(props: NotesListProps) {
 
   return (
     <div className={pageStyles["notes-column"]}>
-      <input
-        type="text"
+      <TextInput
+        name="title"
+        label="Search your notes"
+        description="You can filter your notes by the content of their title and content."
         placeholder={"search for notes..."}
         defaultValue={searchParams.get("query")?.toString()}
         onChange={(e) => {
@@ -35,18 +38,18 @@ export default function NotesList(props: NotesListProps) {
         }}
       />
 
-      <div className={pageStyles["note-column-item"]}>
-        <p>
-          <button
-            onClick={() => {
-              router.push("/");
-            }}
-          >
-            create note
-          </button>
-        </p>
-      </div>
+      {/*TODO: pencil icon on the left? */}
+      <Button
+        fullWidth
+        variant="filled"
+        onClick={() => {
+          router.push("/");
+        }}
+      >
+        Create New Note
+      </Button>
 
+      <div className={pageStyles["notes-list"]}></div>
       {notes.map((note) => {
         return <NoteColumnItem key={note.id} note={note} />;
       })}
