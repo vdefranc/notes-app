@@ -7,7 +7,7 @@
 
 .notes-column {
   flex: 1;
-  flex-basis: 20%;
+  flex-basis: 25%;
   padding: 0 1em;
   border: 1px solid red;
 }
@@ -16,14 +16,50 @@
   padding: 1em;
 }
 
-a:not(:last-of-type) .note-column-item {
-  border-bottom: 1px solid #ccc;
-}
-
-
 .selected-note {
   flex: 6;
   flex-basis: 75%;
   padding: 1em;
   border: 1px solid blue;
+}
+
+.truncate {
+  width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*a.selected-link-item ~ a .note-column-item {*/
+/*  border-bottom: none !important;*/
+/*}*/
+
+/*a.link-item:not(:last-of-type) > .note-column-item {*/
+/*  border-bottom: 1px solid #ccc;*/
+/*}*/
+
+/*a.link-item:not(:has(~ .selected-link-item)) > .note-column-item {*/
+/*  border-bottom: none !important;*/
+/*}*/
+
+
+.link-item .note-column-item__title {
+  color: red !important;
+}
+
+.note-column-item__title {
+  font-weight: bold;
+}
+
+.note-column-item__updated_at {
+  color: #000;
+}
+
+.note-column-item__body-preview {
+  color: #777;
+}
+
+.note_column_item__selected_item {
+  background-color: rgb(255 227 144);
+  border-radius: 8px;
 }
