@@ -9,7 +9,7 @@
   flex: 1;
   flex-basis: 25%;
   padding: 0 1em;
-  border: 1px solid red;
+  border-right: 1px solid #ccc;
 }
 
 .note-column-item {
@@ -20,7 +20,6 @@
   flex: 6;
   flex-basis: 75%;
   padding: 1em;
-  border: 1px solid blue;
 }
 
 .truncate {
@@ -42,10 +41,6 @@
 /*  border-bottom: none !important;*/
 /*}*/
 
-
-.link-item .note-column-item__title {
-  color: red !important;
-}
 
 .note-column-item__title {
   font-weight: bold;
