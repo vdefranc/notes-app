@@ -1,8 +1,8 @@
 import pageStyles from "./page.module.css";
 
-import SelectedNote from "@/app/SelectedNote";
-import NotesList from "@/app/NotesList";
-import { getNoteById, getNotes } from "@/app/serverActions";
+import SelectedNote from "@/app/notes-components/SelectedNote";
+import NotesList from "@/app/notes-components/NotesList";
+import { getNoteById, getNotes } from "@/app/server/serverActions";
 
 export default async function Home({
   searchParams,

@@ -3,8 +3,8 @@
 import { Note } from "@/app/types";
 import pageStyles from "./page.module.css";
 
-import SelectedNote from "@/app/SelectedNote";
-import NotesList from "@/app/NotesList";
+import SelectedNote from "@/app/notes-components/SelectedNote";
+import NotesList from "@/app/notes-components/NotesList";
 
 import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";

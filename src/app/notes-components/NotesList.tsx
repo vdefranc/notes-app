@@ -1,7 +1,7 @@
 "use client";
 
 import pageStyles from "@/app/page.module.css";
-import NoteColumnItem from "@/app/NoteColumnItem";
+import NoteColumnItem from "@/app/notes-components/NoteColumnItem";
 import { Note } from "@/app/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, TextInput } from "@mantine/core";
