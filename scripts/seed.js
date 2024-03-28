@@ -3,7 +3,7 @@ const { db } = require("@vercel/postgres");
 async function dropNotesTable(client) {
   try {
     const result = await client.sql`
-      DROP TABLE notes;
+      DROP TABLE IF EXISTS notes;
     `;
 
     console.log(`Dropped "notes" table`);
@@ -27,8 +27,8 @@ async function createNotesTable(client) {
         user_id UUID,
         title VARCHAR(50) not null,
         body VARCHAR(300) not null,
-        created_at DATE not null default now(),
-        updated_at DATE not null default now()
+        created_at timestamp not null default now(),
+        updated_at timestamp not null default now()
       );
       
       alter table notes

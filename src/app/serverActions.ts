@@ -12,18 +12,16 @@ export async function createNote(formData: FormData) {
   // need validation
   const values = Object.fromEntries(formData.entries());
 
-  const noteData: Omit<Note, "created_at" | "id"> = {
+  const noteData: Omit<Note, "created_at" | "updated_at" | "id"> = {
     // probably aren't going to care about user ids!
     title: String(values.title),
     body: String(values.body),
     user_id: uuid.v4(),
-
-    updated_at: new Date(),
   };
 
   await sql`
-    INSERT INTO notes (user_id, title, body, updated_at)
-    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body}, ${noteData.updated_at.toISOString()})
+    INSERT INTO notes (user_id, title, body)
+    VALUES (${noteData.user_id}, ${noteData.title}, ${noteData.body})
   `;
 
   revalidatePath("/");

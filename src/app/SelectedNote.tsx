@@ -61,7 +61,6 @@ export default function SelectedNote({ note }: { note: Note | null }) {
     <div className={pageStyles["selected-note"]}>
       <form
         id="note-form"
-        onChange={handleChangeEvent}
         action={async (event) => {
           const action = note?.id ? "update" : "create";
 
@@ -83,6 +82,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           placeholder={"add note text"}
           name="title"
           value={formState.title}
+          onChange={handleChangeEvent}
         />
         <br />
         <br />
@@ -93,6 +93,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           placeholder={"add note body"}
           rows={10}
           value={formState.body}
+          onChange={handleChangeEvent}
         />
         <br />
         <br />
