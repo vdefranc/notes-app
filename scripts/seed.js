@@ -1,17 +1,38 @@
 const { db } = require("@vercel/postgres");
 
-async function seedNotes(client) {
+async function dropNotesTable(client) {
+  try {
+    const result = await client.sql`
+      DROP TABLE notes;
+    `;
+
+    console.log(`Dropped "notes" table`);
+
+    return {
+      result,
+    };
+  } catch (error) {
+    console.error("Error dropping notes table:", error);
+    throw error;
+  }
+}
+
+async function createNotesTable(client) {
   try {
     await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
     const createdTable = await client.sql`
       CREATE TABLE IF NOT EXISTS notes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         user_id UUID,
-        title VARCHAR(255) not null,
-        body VARCHAR(255) not null,
+        title VARCHAR(50) not null,
+        body VARCHAR(300) not null,
         created_at DATE not null default now(),
         updated_at DATE not null default now()
       );
+      
+      alter table notes
+        add constraint check_min_length check (length(body) >= 20);
     `;
 
     console.log(`Created "notes" table`);
@@ -20,14 +41,17 @@ async function seedNotes(client) {
       createdTable,
     };
   } catch (error) {
-    console.error("Error seeding users:", error);
+    console.error("Error creating notes table:", error);
     throw error;
   }
 }
 
 async function main() {
   const client = await db.connect();
-  await seedNotes(client);
+
+  await dropNotesTable(client);
+  await createNotesTable(client);
+
   await client.end();
 }
 

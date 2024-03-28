@@ -19,9 +19,7 @@ export default async function Home({
     <main className={pageStyles.main}>
       <NotesList notes={notes} />
 
-      <div className={pageStyles["selected-note"]}>
-        <SelectedNote note={note} />
-      </div>
+      <SelectedNote note={note} />
     </main>
   );
 }
