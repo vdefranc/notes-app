@@ -2,8 +2,8 @@
   "name": "notes-app",
   "version": "0.1.0",
   "private": true,
-  "engines" : {
-    "node" : ">20.5.1"
+  "engines": {
+    "node": ">20.5.1"
   },
   "scripts": {
     "dev": "next dev",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@mantine/core": "^7.7.0",
     "@mantine/hooks": "^7.7.0",
+    "@tabler/icons-react": "^3.1.0",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
     "next": "14.1.4",

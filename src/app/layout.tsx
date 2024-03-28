@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@mantine/core/styles.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import {
+  ColorSchemeScript,
+  Group,
+  MantineProvider,
+  rem,
+  Text,
+} from "@mantine/core";
+import { IconWriting } from "@tabler/icons-react";
 
+import pageStyles from "./page.module.css";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,7 +37,29 @@ export default function RootLayout({
       </head>
 
       <body className={inter.className}>
-        <MantineProvider>{children}</MantineProvider>
+        <MantineProvider>
+          <>
+            <header className={pageStyles["app-header"]}>
+              <Group h="100%" px="md">
+                <IconWriting
+                  style={{ width: rem(50), height: rem(50) }}
+                  stroke={2}
+                ></IconWriting>
+
+                <div>
+                  <Text size="lg" fw="500">
+                    A simple notes application by Vinny DeFrancesco
+                  </Text>
+
+                  <Text size="sm">
+                    Do you like writing notes? You&apos;re in luck!
+                  </Text>
+                </div>
+              </Group>
+            </header>
+            {children}
+          </>
+        </MantineProvider>
       </body>
     </html>
   );

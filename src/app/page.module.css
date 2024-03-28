@@ -5,10 +5,17 @@
   min-height: 100vh;
 }
 
+.app-header {
+  background-color: rgb(255 227 144);
+  color: #111;
+  padding: 1em;
+}
+
 .notes-column {
   flex: 1;
   flex-basis: 25%;
   padding: 0 1em;
+  border-right: 1px solid #ccc;
 }
 
 .notes-list {
@@ -31,19 +38,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/*a.selected-link-item ~ a .note-column-item {*/
-/*  border-bottom: none !important;*/
-/*}*/
-
-/*a.link-item:not(:last-of-type) > .note-column-item {*/
-/*  border-bottom: 1px solid #ccc;*/
-/*}*/
-
-/*a.link-item:not(:has(~ .selected-link-item)) > .note-column-item {*/
-/*  border-bottom: none !important;*/
-/*}*/
-
 
 .note-column-item__title {
   font-weight: bold;

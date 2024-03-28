@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN apk add --no-cache g++ make python3 py3-pip libc6-compat
 COPY package*.json /app
-RUN yarn install
+RUN npm install
 COPY . /app
 
 EXPOSE 3000
