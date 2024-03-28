@@ -78,13 +78,19 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           }
         }}
       >
-        <input type="text" name="title" value={formState.title} />
+        <input
+          type="text"
+          placeholder={"add note text"}
+          name="title"
+          value={formState.title}
+        />
         <br />
         <br />
 
         <textarea
           className={noteFormStyles["note-body"]}
           name="body"
+          placeholder={"add note body"}
           rows={10}
           value={formState.body}
         />

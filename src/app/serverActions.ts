@@ -3,8 +3,12 @@
 import { revalidatePath } from "next/cache";
 
 import * as uuid from "uuid";
-import { sql } from "@vercel/postgres";
+import * as vercelPg from "@vercel/postgres";
 import { Note } from "@/app/notes/types";
+
+const { sql } = vercelPg;
+
+//   TODO: fix all the ignores in this file
 
 export async function createNote(formData: FormData) {
   // need validation
@@ -15,6 +19,7 @@ export async function createNote(formData: FormData) {
     title: String(values.title),
     body: String(values.body),
     user_id: uuid.v4(),
+    // @ts-ignore
     updated_at: new Date().toISOString(),
   };
 
@@ -32,6 +37,7 @@ export async function updateNote(note: Note) {
   const noteData: Note = {
     // probably aren't going to care about user ids!
     ...note,
+    // @ts-ignore
     updated_at: new Date().toISOString(),
   };
 
@@ -43,12 +49,26 @@ export async function updateNote(note: Note) {
   revalidatePath(`/`);
 }
 
-export async function getNotes(): Promise<Note[]> {
-  const noteQueryResult = await sql<Note>`
-    select * from notes order by updated_at desc;
-  `;
+export async function getNotes(query: string = ""): Promise<Note[]> {
+  try {
+    if (!!query) {
+      const noteQueryResult = await sql<Note>`
+        select * from notes 
+        where body like '%'||${query}||'%' or title like '%'||${query}||'%' 
+        order by updated_at desc;
+      `;
 
-  return noteQueryResult.rows;
+      return noteQueryResult.rows;
+    }
+
+    const noteQueryResult =
+      await sql<Note>`select * from notes order by updated_at desc;`;
+
+    return noteQueryResult.rows;
+  } catch (err) {
+    console.log("error querying for notes: ", err);
+    return [];
+  }
 }
 
 export async function getNoteById({

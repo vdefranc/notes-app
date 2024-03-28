@@ -7,9 +7,9 @@ import { getNoteById, getNotes } from "@/app/serverActions";
 export default async function Home({
   searchParams,
 }: {
-  searchParams: { note: string | null };
+  searchParams: { note: string | null; query: string | null };
 }) {
-  const notes = await getNotes();
+  const notes = await getNotes(searchParams.query ?? "");
 
   const note = searchParams.note
     ? await getNoteById({ id: searchParams.note })
