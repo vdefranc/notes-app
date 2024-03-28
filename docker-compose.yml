@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  nextjs-app:
+    container_name: nextjs-notes-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # Expose port 3000 for Next.js
+    environment:
+      NODE_ENV: development
+      POSTGRES_DB: notes_app__defrancesco
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: host.docker.internal
+    depends_on:
+      - postgres
+
+    restart: always
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/.next
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: notes_app__defrancesco
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./seed-data/migrations:/docker-entrypoint-initdb.d
+      - postgres-data:/var/lib/postgresql/data
+
+
+#  pg_proxy:
+#    image: ghcr.io/neondatabase/wsproxy:latest
+#    environment:
+#      APPEND_PORT: "postgres:5432"
+#      ALLOW_ADDR_REGEX: ".*"
+#      LOG_TRAFFIC: "true"
+#    ports:
+#      - "5433:80"
+#    depends_on:
+#      - postgres
+
+volumes:
+  postgres-data: # Named volume for persistence
