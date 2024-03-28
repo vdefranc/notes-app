@@ -63,6 +63,20 @@ export default function SelectedNote({ note }: { note: Note | null }) {
   async function handleFormSubmit(formData: FormData) {
     const action = note?.id ? "update" : "create";
 
+    if (formState.body.length > 300 || formState.body.length < 20) {
+      alert(
+        "Your note content must be between 20 and 300 characters in length!",
+      );
+
+      return;
+    }
+
+    if (formState.title.length < 1) {
+      alert("Your note must have a title.");
+
+      return;
+    }
+
     if (action === "update" && note?.id) {
       const newNoteValue: Note = {
         ...note,
@@ -70,13 +84,25 @@ export default function SelectedNote({ note }: { note: Note | null }) {
         title: formState.title,
       };
 
-      await updateNote(newNoteValue);
+      try {
+        await updateNote(newNoteValue);
+      } catch (e) {
+        alert(
+          "There was an error updating your note. Please try saving it again.",
+        );
+      }
     } else {
-      const createdNote = await createNote(formData);
-      const newParams = new URLSearchParams(searchParams);
+      try {
+        const createdNote = await createNote(formData);
+        const newParams = new URLSearchParams(searchParams);
 
-      newParams.set("note", createdNote.id);
-      router.replace(`${pathname}?${newParams.toString()}`);
+        newParams.set("note", createdNote.id);
+        router.replace(`${pathname}?${newParams.toString()}`);
+      } catch (e) {
+        alert(
+          "There was an error creating your note. Please try submitting again.",
+        );
+      }
     }
   }
 

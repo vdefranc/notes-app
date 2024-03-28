@@ -7,7 +7,6 @@ import { Note } from "@/app/types";
 import pool from "@/app/server/psqlClient";
 
 export async function createNote(formData: FormData): Promise<Note> {
-  // need validation
   const values = Object.fromEntries(formData.entries());
 
   const noteData: Omit<Note, "created_at" | "updated_at" | "id"> = {
