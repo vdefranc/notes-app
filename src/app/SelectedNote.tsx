@@ -1,7 +1,7 @@
 "use client";
 
 import { createNote, updateNote } from "@/app/serverActions";
-import { Note } from "@/app/notes/types";
+import { Note } from "@/app/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";

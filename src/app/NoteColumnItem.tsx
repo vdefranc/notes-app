@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Note } from "@/app/notes/types";
+import { Note } from "@/app/types";
 import pageStyles from "@/app/page.module.css";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";

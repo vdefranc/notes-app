@@ -1,6 +1,6 @@
 "use client";
 
-import { Note } from "@/app/notes/types";
+import { Note } from "@/app/types";
 import pageStyles from "./page.module.css";
 
 import SelectedNote from "@/app/SelectedNote";

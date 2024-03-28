@@ -2,7 +2,7 @@
 
 import pageStyles from "@/app/page.module.css";
 import NoteColumnItem from "@/app/NoteColumnItem";
-import { Note } from "@/app/notes/types";
+import { Note } from "@/app/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button, TextInput } from "@mantine/core";
 

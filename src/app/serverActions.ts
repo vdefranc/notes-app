@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 import * as uuid from "uuid";
-import { Note } from "@/app/notes/types";
+import { Note } from "@/app/types";
 import pool from "@/app/psqlClient";
 
 export async function createNote(formData: FormData): Promise<Note> {
