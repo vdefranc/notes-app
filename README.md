@@ -21,7 +21,7 @@ If you want to run the application outside a docker container:
 ## project approach
 I decided to build the app using Next.js. I did that for a couple of reasons. First, I know that it's a part of your
 tech stack. Also, I've never built anything with React Server Components, so I thought I'd give that a
-try in combination with Next! I'll share some my thoughts on the tech stack later on in the README.
+try in combination with Next!
 
 The app itself is, obviously, a pretty straightforward CRUD application. I aimed to meet the requirements
 while also adding some behaviors that are similar to those of the Apple Notes OSX app. Specifically,
@@ -30,6 +30,10 @@ the most-recently updated note will appear at the top of the list of notes. And 
 It's deployed on Vercel, and it uses a postgres data store. I felt uncomfortable deploying the app publicly
 on the internet without user authentication set up, but ultimately I felt that building auth was out
 of scope here. This means that all users will be able to view and edit all notes.
+
+One more note is that I chose to use the [Mantine](https://mantine.dev/) UI library. It definitely saved me a lot of 
+time. Being a UI component framework, it's fairly complex by necessity. But I found it intuitive to use, especially 
+when compared to my experiences with other libraries over the past few years. It also looks pretty nice!
 
 ## thoughts on Next.js with RSC
 This was my first foray into building something with both Next and RSC. I have thoughts!
