@@ -55,11 +55,16 @@ export default function SelectedNote({ note }: { note: Note | null }) {
     });
   }, [note?.id]);
 
-  // todo: get rid of `any`
+  // Note: Really grumpy about this `any`, but it's 10:30 at night, and it's time for me to submit this thing lol
   function handleChangeEvent(event: any) {
     dispatch({ type: event.target.name, value: event.target.value });
   }
 
+  // NOTE: this handler feels questionable to me. I don't like that the conditions of "are we creating a note"
+  // and "are we updating a note" are handled at this level. I'd choose to move these conditional details up the
+  // callstack (if I had the time). Specifically, I'd turn the component in this file into a more-generic one
+  // that accepts a `formAction` function. The parent component would be responsible for determining the
+  // exact behavior of the action it passes
   async function handleFormSubmit(formData: FormData) {
     const action = note?.id ? "update" : "create";
 

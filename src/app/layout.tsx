@@ -1,22 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@mantine/core/styles.css";
-import {
-  ColorSchemeScript,
-  Group,
-  MantineProvider,
-  rem,
-  Text,
-} from "@mantine/core";
-import { IconWriting } from "@tabler/icons-react";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 
-import pageStyles from "./page.module.css";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "a notes app, crafted by vinny",
+  title: "a notes app, crafted by Vinny",
   description: "a simple notes application",
 };
 

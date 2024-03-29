@@ -2,11 +2,18 @@
 
 import { revalidatePath } from "next/cache";
 
-import * as uuid from "uuid";
 import { Note } from "@/app/types";
 import pool from "@/app/server/psqlClient";
 
+/*
+    note that in this file, there aare a few instances where we are using th `pool.query` method.
+    When using that method, db connections are automatically closed after the query resolves,
+    so we arent leaking db clients/connections
+    https://node-postgres.com/features/pooling#single-query
+*/
+
 export async function createNote(formData: FormData): Promise<Note> {
+  // NOTE: It would have been appropriate to add input validation in this function
   const values = Object.fromEntries(formData.entries());
 
   const noteData: Omit<Note, "created_at" | "updated_at" | "id"> = {
@@ -28,10 +35,8 @@ export async function createNote(formData: FormData): Promise<Note> {
 }
 
 export async function updateNote(note: Note) {
-  // need validation
-
+  // NOTE: It would have been appropriate to add input validation in this function
   const noteData: Note = {
-    // probably aren't going to care about user ids!
     ...note,
     updated_at: new Date(),
   };
@@ -56,8 +61,6 @@ export async function updateNote(note: Note) {
 
 export async function getNotes(query: string = ""): Promise<Note[]> {
   try {
-    // note that clients are closed automatically when using pool.query
-    // https://node-postgres.com/features/pooling#single-query
     const queryResult = await pool.query<Note>(
       `
           select * from notes 
