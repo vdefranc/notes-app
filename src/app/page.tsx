@@ -1,8 +1,5 @@
-import pageStyles from "./page.module.css";
-
-import SelectedNote from "@/app/notes-components/SelectedNote";
-import NotesList from "@/app/notes-components/NotesList";
 import { getNoteById, getNotes } from "@/app/server/serverActions";
+import ClientEntryPoint from "@/app/ClientEntryPoint";
 
 export default async function Home({
   searchParams,
@@ -15,11 +12,5 @@ export default async function Home({
     ? await getNoteById({ id: searchParams.note })
     : null;
 
-  return (
-    <main className={pageStyles.main}>
-      <NotesList notes={notes} />
-
-      <SelectedNote note={note} />
-    </main>
-  );
+  return <ClientEntryPoint note={note} notes={notes} />;
 }

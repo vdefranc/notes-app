@@ -5,6 +5,7 @@ import { Note } from "@/app/types";
 import pageStyles from "@/app/page.module.css";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
+import { Text } from "@mantine/core";
 
 interface NoteColumnItemProps {
   note: Note;
@@ -17,33 +18,28 @@ export default function NoteColumnItem(props: NoteColumnItemProps) {
   const noteId = searchParams.get("note");
 
   return (
-    <Link
-      href={`?note=${note.id}`}
-      className={clsx("link-item", {
-        // [pageStyles["unselected-link-item"]]: note.id !== noteId,
-        [pageStyles["selected-link-item"]]: note.id === noteId,
-      })}
-    >
+    <Link href={`?note=${note.id}`}>
       <div
         className={clsx(pageStyles["note-column-item"], {
           [pageStyles["note_column_item__selected_item"]]: note.id === noteId,
         })}
+        style={{ maxWidth: "100%", overflow: "hidden" }}
       >
-        <p
-          className={`${pageStyles["note-column-item__title"]} ${pageStyles["truncate"]}`}
-        >
-          {note.title}
-        </p>
+        {/*<p*/}
+        {/*  className={`${pageStyles["note-column-item__title"]} ${pageStyles["truncate"]}`}*/}
+        {/*>*/}
+        {/*  {note.title}*/}
+        {/*</p>*/}
 
-        <p className={pageStyles["truncate"]}>
-          <span className={pageStyles["note-column-item__updated_at"]}>
-            {note.updated_at.toISOString().split("T")[0]}
-          </span>
-          &nbsp; &ndash; &nbsp;
-          <span className={pageStyles["note-column-item__body-preview"]}>
-            {note.body}
-          </span>
-        </p>
+        <Text size="lg" fw="600">
+          {note.title}
+        </Text>
+
+        <p className={pageStyles["truncate"]}>{note.body}</p>
+
+        <Text size="md" fs={"italic"} fw={400}>
+          Updated on {note.updated_at.toISOString().split("T")[0]}
+        </Text>
       </div>
     </Link>
   );

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   padding: 1rem;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
 }
 
 .app-header {
@@ -13,9 +13,8 @@
 
 .notes-column {
   flex: 1;
-  flex-basis: 25%;
+  flex-basis: 20%;
   padding: 0 1em;
-  border-right: 1px solid #ccc;
 }
 
 .notes-list {
@@ -37,6 +36,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #777;
 }
 
 .note-column-item__title {

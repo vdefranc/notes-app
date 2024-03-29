@@ -5,7 +5,7 @@ import { Note } from "@/app/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Textarea, TextInput } from "@mantine/core";
+import { Button, Group, Textarea, TextInput } from "@mantine/core";
 
 interface FormState {
   body: string;
@@ -107,8 +107,8 @@ export default function SelectedNote({ note }: { note: Note | null }) {
   }
 
   return (
-    <div className={pageStyles["selected-note"]}>
-      <form id="note-form" action={handleFormSubmit}>
+    <form id="note-form" action={handleFormSubmit}>
+      <Group justify={"space-between"}>
         <TextInput
           name="title"
           label="Note title"
@@ -117,24 +117,33 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           onChange={handleChangeEvent}
         />
 
-        <br />
-
-        <Textarea
-          name="body"
-          label={"Note content"}
-          description="Your note can be between 20 and 300 characters long."
-          placeholder={"add note body"}
-          rows={10}
-          value={formState.body}
-          onChange={handleChangeEvent}
-        />
-
-        <br />
-
-        <Button variant={"filled"} type="submit">
-          save your note!
+        <Button
+          variant="filled"
+          onClick={() => {
+            router.push("/");
+          }}
+        >
+          Create New Note
         </Button>
-      </form>
-    </div>
+      </Group>
+
+      <br />
+
+      <Textarea
+        name="body"
+        label={"Note content"}
+        description="Your note can be between 20 and 300 characters long."
+        placeholder={"add note body"}
+        rows={10}
+        value={formState.body}
+        onChange={handleChangeEvent}
+      />
+
+      <br />
+
+      <Button variant={"filled"} type="submit">
+        save your note!
+      </Button>
+    </form>
   );
 }
