@@ -1,6 +1,6 @@
 ## takehome solution
 
-Hello! Thank you for taking the time to review my notes app. I'd like to share a few things. First, here's how to run
+Hello! thanks for taking the time to review my notes app. I'd like to share a few things. First, here's how to run
 the app locally:
 
 ## running the project
@@ -27,7 +27,7 @@ The app itself is, obviously, a pretty straightforward CRUD application. I aimed
 while also adding some behaviors that are similar to those of the Apple Notes OSX app. Specifically,
 the most-recently updated note will appear at the top of the list of notes. And there's sort of a similar layout and feel.
 
-It's deployed on Vercel, and it uses a postgres data store. I felt weird uncomfortable deploying the app publicly
+It's deployed on Vercel, and it uses a postgres data store. I felt uncomfortable deploying the app publicly
 on the internet without user authentication set up, but ultimately I felt that building auth was out
 of scope here. This means that all users will be able to view and edit all notes.
 

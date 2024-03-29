@@ -25,12 +25,6 @@ export default function NoteColumnItem(props: NoteColumnItemProps) {
         })}
         style={{ maxWidth: "100%", overflow: "hidden" }}
       >
-        {/*<p*/}
-        {/*  className={`${pageStyles["note-column-item__title"]} ${pageStyles["truncate"]}`}*/}
-        {/*>*/}
-        {/*  {note.title}*/}
-        {/*</p>*/}
-
         <Text size="md" fw="600">
           {note.title}
         </Text>
