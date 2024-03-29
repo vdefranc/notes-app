@@ -31,13 +31,13 @@ export default function NoteColumnItem(props: NoteColumnItemProps) {
         {/*  {note.title}*/}
         {/*</p>*/}
 
-        <Text size="lg" fw="600">
+        <Text size="md" fw="600">
           {note.title}
         </Text>
 
         <p className={pageStyles["truncate"]}>{note.body}</p>
 
-        <Text size="md" fs={"italic"} fw={400}>
+        <Text size="sm" fs={"italic"} fw={400}>
           Updated on {note.updated_at.toISOString().split("T")[0]}
         </Text>
       </div>
