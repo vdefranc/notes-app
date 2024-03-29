@@ -1,11 +1,11 @@
 import { getNoteById, getNotes } from "@/app/server/serverActions";
 import ClientEntryPoint from "@/app/ClientEntryPoint";
 
-export default async function Home({
-  searchParams,
-}: {
+interface HomepageProps {
   searchParams: { note: string | null; query: string | null };
-}) {
+}
+
+export default async function Home({ searchParams }: HomepageProps) {
   const notes = await getNotes(searchParams.query ?? "");
 
   const note = searchParams.note

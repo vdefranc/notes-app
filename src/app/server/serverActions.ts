@@ -8,7 +8,7 @@ import pool from "@/app/server/psqlClient";
 /*
     note that in this file, there aare a few instances where we are using th `pool.query` method.
     When using that method, db connections are automatically closed after the query resolves,
-    so we arent leaking db clients/connections
+    so we aren't leaking db clients/connections
     https://node-postgres.com/features/pooling#single-query
 */
 
