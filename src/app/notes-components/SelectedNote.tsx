@@ -1,11 +1,11 @@
 "use client";
 
 import { createNote, updateNote } from "@/app/server/serverActions";
-import { Note } from "@/app/types";
+import { Note, Patient } from "@/app/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Group, Textarea, TextInput } from "@mantine/core";
+import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 
 interface FormState {
   body: string;
@@ -37,7 +37,13 @@ function formReducer(state: FormState, action: FormAction) {
   }
 }
 
-export default function SelectedNote({ note }: { note: Note | null }) {
+export default function SelectedNote({
+  note,
+  patients,
+}: {
+  note: Note | null;
+  patients: Patient[];
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -137,12 +143,24 @@ export default function SelectedNote({ note }: { note: Note | null }) {
 
       <br />
 
-      <TextInput
+      <Select
         name="patient_id"
         label="patient id"
         placeholder={"patient id"}
         value={formState.patient_id}
-        onChange={handleChangeEvent}
+        allowDeselect={false}
+        onChange={(patient_id) =>
+          // Select's onChange does not adhere to the typical form input onChange api.
+          handleChangeEvent({
+            target: { name: "patient_id", value: patient_id },
+          })
+        }
+        data={patients.map((patient) => {
+          return {
+            value: patient.id,
+            label: `${patient.first_name} ${patient.last_name}`,
+          };
+        })}
       />
 
       <br />

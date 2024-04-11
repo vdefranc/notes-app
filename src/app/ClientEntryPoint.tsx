@@ -1,6 +1,6 @@
 "use client";
 
-import { Note } from "@/app/types";
+import { Note, Patient } from "@/app/types";
 import pageStyles from "./page.module.css";
 
 import SelectedNote from "@/app/notes-components/SelectedNote";
@@ -13,9 +13,11 @@ import SearchBar from "@/app/notes-components/SearchBar";
 export default function ClientEntryPoint({
   note,
   notes,
+  patients,
 }: {
   note: Note | null;
   notes: Note[];
+  patients: Patient[];
 }) {
   return (
     <>
@@ -58,7 +60,7 @@ export default function ClientEntryPoint({
         </AppShell.Navbar>
 
         <AppShell.Main>
-          <SelectedNote note={note} />
+          <SelectedNote note={note} patients={patients} />
         </AppShell.Main>
       </AppShell>
     </>
