@@ -94,20 +94,33 @@ export async function createPatient(formData: FormData): Promise<Patient> {
   // NOTE: It would have been appropriate to add input validation in this function
   const values = Object.fromEntries(formData.entries());
 
-  const noteData: Omit<Patient, "created_at" | "updated_at" | "id"> = {
-    first_name: String(values.title),
-    last_name: String(values.body),
+  const patientData: Omit<Patient, "created_at" | "updated_at" | "id"> = {
+    first_name: String(values.first_name),
+    last_name: String(values.last_name),
   };
 
   const result = await pool.query<Patient>(
     `
-      INSERT INTO notes (title, body)
+      INSERT INTO patients (first_name, last_name)
       VALUES ($1, $2) returning *;
     `,
-    [noteData.first_name, noteData.last_name],
+    [patientData.first_name, patientData.last_name],
   );
 
   revalidatePath("/");
 
   return result.rows[0];
+}
+
+export async function getPatients(): Promise<Patient[]> {
+  try {
+    const queryResult = await pool.query<Patient>(
+      "select * from patients order by updated_at desc",
+    );
+
+    return queryResult.rows;
+  } catch (err) {
+    console.log("error querying for notes: ", err);
+    return [];
+  }
 }

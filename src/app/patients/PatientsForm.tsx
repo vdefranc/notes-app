@@ -4,6 +4,7 @@ import { Patient } from "@/app/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useReducer } from "react";
 import { Button, Group, TextInput } from "@mantine/core";
+import { createPatient } from "@/app/server/serverActions";
 
 interface FormState {
   first_name: string;
@@ -74,7 +75,7 @@ export default function PatientsForm({ patient }: { patient: Patient | null }) {
       };
 
       try {
-        // await updatepatient(newpatientValue);
+        // await updatePatient(newpatientValue);
       } catch (e) {
         alert(
           "There was an error updating your patient. Please try saving it again.",
@@ -82,11 +83,8 @@ export default function PatientsForm({ patient }: { patient: Patient | null }) {
       }
     } else {
       try {
-        // const createdpatient = await createpatient(formData);
-        const newParams = new URLSearchParams(searchParams);
-
-        // newParams.set("patient", createdpatient.id);
-        // router.replace(`${pathname}?${newParams.toString()}`);
+        const createdPatient = await createPatient(formData);
+        // const newParams = new URLSearchParams(searchParams);
       } catch (e) {
         alert(
           "There was an error creating your patient. Please try submitting again.",
