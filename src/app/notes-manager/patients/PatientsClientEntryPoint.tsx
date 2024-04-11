@@ -5,7 +5,7 @@ import { Patient } from "@/app/types";
 import { AppShell, Group, rem, Text, ScrollArea } from "@mantine/core";
 
 import SearchBar from "@/app/notes-components/SearchBar";
-import PatientsForm from "@/app/notes_application/patients/PatientsForm";
+import PatientsForm from "@/app/notes-manager/patients/PatientsForm";
 
 export default function PatientsClientEntryPoint({
   patients,

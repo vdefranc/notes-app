@@ -1,5 +1,5 @@
 import { getPatients } from "@/app/server/serverActions";
-import PatientsClientEntryPoint from "@/app/notes_application/patients/PatientsClientEntryPoint";
+import PatientsClientEntryPoint from "@/app/notes-manager/patients/PatientsClientEntryPoint";
 
 export default async function PatientsPage() {
   const patients = await getPatients();
