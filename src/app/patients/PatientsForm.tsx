@@ -1,7 +1,7 @@
 "use client";
 
 import { Patient } from "@/app/types";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useReducer } from "react";
 import { Button, Group, TextInput } from "@mantine/core";
 import { createPatient } from "@/app/server/serverActions";
@@ -37,8 +37,6 @@ function formReducer(state: FormState, action: FormAction) {
 
 export default function PatientsForm({ patient }: { patient: Patient | null }) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
   const [formState, dispatch] = useReducer(formReducer, {
     first_name: patient?.first_name ?? "",
     last_name: patient?.last_name ?? "",
@@ -59,37 +57,18 @@ export default function PatientsForm({ patient }: { patient: Patient | null }) {
   }
 
   async function handleFormSubmit(formData: FormData) {
-    const action = patient?.id ? "update" : "create";
-
     if (formState.first_name.length < 1) {
       alert("Your patient's name must be at least one character");
 
       return;
     }
 
-    if (action === "update" && patient?.id) {
-      const newPatientValue: Patient = {
-        ...patient,
-        first_name: formState.first_name,
-        last_name: formState.last_name,
-      };
-
-      try {
-        // await updatePatient(newpatientValue);
-      } catch (e) {
-        alert(
-          "There was an error updating your patient. Please try saving it again.",
-        );
-      }
-    } else {
-      try {
-        const createdPatient = await createPatient(formData);
-        // const newParams = new URLSearchParams(searchParams);
-      } catch (e) {
-        alert(
-          "There was an error creating your patient. Please try submitting again.",
-        );
-      }
+    try {
+      await createPatient(formData);
+    } catch (e) {
+      alert(
+        "There was an error creating your patient. Please try submitting again.",
+      );
     }
   }
 
