@@ -3,8 +3,10 @@
 import { Patient } from "@/app/types";
 import { useRouter } from "next/navigation";
 import { useEffect, useReducer } from "react";
-import { Button, Group, TextInput } from "@mantine/core";
+import { AppShell, Button, Group, ScrollArea, TextInput } from "@mantine/core";
 import { createPatient } from "@/app/server/serverActions";
+import SearchBar from "@/app/notes-components/SearchBar";
+import NotesList from "@/app/notes-components/NotesList";
 
 interface FormState {
   first_name: string;
@@ -73,8 +75,8 @@ export default function PatientsForm({ patient }: { patient: Patient | null }) {
   }
 
   return (
-    <form id="patient-form" action={handleFormSubmit}>
-      <Group justify={"space-between"}>
+    <>
+      <form id="patient-form" action={handleFormSubmit}>
         <TextInput
           name="first_name"
           label="patient first name"
@@ -91,21 +93,12 @@ export default function PatientsForm({ patient }: { patient: Patient | null }) {
           onChange={handleChangeEvent}
         />
 
-        <Button
-          variant="filled"
-          onClick={() => {
-            router.push("/");
-          }}
-        >
-          Create New Patient
+        <br />
+
+        <Button variant={"filled"} type="submit">
+          submit!
         </Button>
-      </Group>
-
-      <br />
-
-      <Button variant={"filled"} type="submit">
-        save your patient!
-      </Button>
-    </form>
+      </form>
+    </>
   );
 }
