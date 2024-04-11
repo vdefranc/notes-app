@@ -12,7 +12,9 @@ export default async function PatientsPage() {
 
       <div>
         {patients.map((patient) => (
-          <p key={patient.id}>{patient.first_name}</p>
+          <p key={patient.id}>
+            {patient.first_name} -- {patient.id}
+          </p>
         ))}
       </div>
     </>
