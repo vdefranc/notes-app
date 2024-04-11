@@ -1,5 +1,6 @@
 export interface Note {
   id: string;
+  patient_id: string;
   title: string;
   body: string;
   created_at: Date;

@@ -19,14 +19,15 @@ export async function createNote(formData: FormData): Promise<Note> {
   const noteData: Omit<Note, "created_at" | "updated_at" | "id"> = {
     title: String(values.title),
     body: String(values.body),
+    patient_id: String(values.patient_id),
   };
 
   const result = await pool.query<Note>(
     `
-      INSERT INTO notes (title, body)
-      VALUES ($1, $2) returning *;
+      INSERT INTO notes (title, body, patient_id)
+      VALUES ($1, $2, $3) returning *;
     `,
-    [noteData.title, noteData.body],
+    [noteData.title, noteData.body, noteData.patient_id],
   );
 
   revalidatePath("/");

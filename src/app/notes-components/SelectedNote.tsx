@@ -10,6 +10,7 @@ import { Button, Group, Textarea, TextInput } from "@mantine/core";
 interface FormState {
   body: string;
   title: string;
+  patient_id: string;
 }
 
 interface InputAction {
@@ -43,6 +44,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
   const [formState, dispatch] = useReducer(formReducer, {
     title: note?.title ?? "",
     body: note?.body ?? "",
+    patient_id: note?.patient_id ?? "",
   });
 
   useEffect(() => {
@@ -51,6 +53,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
       value: {
         body: note?.body || "",
         title: note?.title || "",
+        patient_id: note?.patient_id ?? "",
       },
     });
   }, [note?.id]);
@@ -131,6 +134,16 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           Create New Note
         </Button>
       </Group>
+
+      <br />
+
+      <TextInput
+        name="patient_id"
+        label="patient id"
+        placeholder={"patient id"}
+        value={formState.patient_id}
+        onChange={handleChangeEvent}
+      />
 
       <br />
 
