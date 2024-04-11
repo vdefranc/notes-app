@@ -1,15 +1,16 @@
 "use client";
 
 import { createNote, updateNote } from "@/app/server/serverActions";
-import { Note } from "@/app/types";
+import { Note, Patient } from "@/app/types";
 import { useEffect, useReducer } from "react";
 import pageStyles from "@/app/page.module.css";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button, Group, Textarea, TextInput } from "@mantine/core";
+import { Button, Group, Select, Textarea, TextInput } from "@mantine/core";
 
 interface FormState {
   body: string;
   title: string;
+  patient_id: string;
 }
 
 interface InputAction {
@@ -36,13 +37,20 @@ function formReducer(state: FormState, action: FormAction) {
   }
 }
 
-export default function SelectedNote({ note }: { note: Note | null }) {
+export default function SelectedNote({
+  note,
+  patients,
+}: {
+  note: Note | null;
+  patients: Patient[];
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const [formState, dispatch] = useReducer(formReducer, {
     title: note?.title ?? "",
     body: note?.body ?? "",
+    patient_id: note?.patient_id ?? "",
   });
 
   useEffect(() => {
@@ -51,6 +59,7 @@ export default function SelectedNote({ note }: { note: Note | null }) {
       value: {
         body: note?.body || "",
         title: note?.title || "",
+        patient_id: note?.patient_id ?? "",
       },
     });
   }, [note?.id]);
@@ -131,6 +140,33 @@ export default function SelectedNote({ note }: { note: Note | null }) {
           Create New Note
         </Button>
       </Group>
+
+      <br />
+
+      {/*
+        note: we disable the input if the note has an id, indicating that the note has already been created.
+        My assumption is that we don't want to allow reassigning a note to another patient.
+      */}
+      <Select
+        name="patient_id"
+        label="patient"
+        placeholder={"patient"}
+        value={formState.patient_id}
+        allowDeselect={false}
+        disabled={!!note?.id}
+        onChange={(patient_id) =>
+          // `Select`'s onChange does not adhere to the typical form input onChange api.
+          handleChangeEvent({
+            target: { name: "patient_id", value: patient_id },
+          })
+        }
+        data={patients.map((patient) => {
+          return {
+            value: patient.id,
+            label: `${patient.first_name} ${patient.last_name}`,
+          };
+        })}
+      />
 
       <br />
 
