@@ -143,14 +143,19 @@ export default function SelectedNote({
 
       <br />
 
+      {/*
+        note: we disable the input if the note has an id, indicating that the note has already been created.
+        My assumption is that we don't want to allow reassigning a note to another patient.
+      */}
       <Select
         name="patient_id"
-        label="patient id"
-        placeholder={"patient id"}
+        label="patient"
+        placeholder={"patient"}
         value={formState.patient_id}
         allowDeselect={false}
+        disabled={!!note?.id}
         onChange={(patient_id) =>
-          // Select's onChange does not adhere to the typical form input onChange api.
+          // `Select`'s onChange does not adhere to the typical form input onChange api.
           handleChangeEvent({
             target: { name: "patient_id", value: patient_id },
           })
