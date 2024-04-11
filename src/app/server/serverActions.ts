@@ -2,11 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 
-import { Note } from "@/app/types";
+import { Note, Patient } from "@/app/types";
 import pool from "@/app/server/psqlClient";
 
 /*
-    note that in this file, there aare a few instances where we are using th `pool.query` method.
+    note that in this file, there are a few instances where we are using th `pool.query` method.
     When using that method, db connections are automatically closed after the query resolves,
     so we aren't leaking db clients/connections
     https://node-postgres.com/features/pooling#single-query
@@ -88,4 +88,26 @@ export async function getNoteById({
   );
 
   return noteQueryResult.rows[0];
+}
+
+export async function createPatient(formData: FormData): Promise<Patient> {
+  // NOTE: It would have been appropriate to add input validation in this function
+  const values = Object.fromEntries(formData.entries());
+
+  const noteData: Omit<Patient, "created_at" | "updated_at" | "id"> = {
+    first_name: String(values.title),
+    last_name: String(values.body),
+  };
+
+  const result = await pool.query<Patient>(
+    `
+      INSERT INTO notes (title, body)
+      VALUES ($1, $2) returning *;
+    `,
+    [noteData.first_name, noteData.last_name],
+  );
+
+  revalidatePath("/");
+
+  return result.rows[0];
 }
